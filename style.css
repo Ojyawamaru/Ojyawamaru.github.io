@@ -1,0 +1,867 @@
+/* =========================================================
+   北澤 宏太郎 — Portfolio
+   黒背景 × 白文字 × 明朝体
+   ========================================================= */
+
+:root {
+  --bg: #777777;
+  --fg: #ffffff;
+  --fg-dim: #ffffff;
+  --fg-faint: #ffffff;
+  --line: rgba(255, 255, 255, 0.45);
+  --accent: #ffffff;
+  --hover-bg: rgba(255, 255, 255, 0.14);
+  --serif-jp: "Noto Serif JP", "Noto Serif CJK JP", "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+  --serif-en: "Cormorant Garamond", "Noto Serif JP", Georgia, serif;
+  --max: 1080px;
+  --pad: clamp(20px, 5vw, 64px);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif-jp);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  font-feature-settings: "palt";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+
+/* 画面内に入ったら、ふわっと浮かび上がる */
+.js .hero-inner, .js .toc, .js .section-inner {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.js .is-visible { opacity: 1; transform: none; }
+
+/* ---------- Hero ---------- */
+.hero {
+  display: flex;
+  align-items: center;
+  padding: clamp(28px, 4vw, 48px) var(--pad) clamp(12px, 2vw, 20px);
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: clamp(24px, 6vw, 80px);
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+}
+
+.name-en {
+  margin: 0.6em 0 0;
+  font-family: var(--serif-en);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* 顔写真：輪郭を柔らかくぼかして黒に溶け込ませる */
+.hero-photo {
+  justify-self: center;
+  width: min(100%, 380px);
+}
+.hero-photo img {
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- 目次 ---------- */
+.toc {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 24px) var(--pad);
+}
+
+.toc-title {
+  margin: 0 0 0.7em;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  color: var(--fg-dim);
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+}
+.toc-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.toc-list > li {
+  border-bottom: 1px solid var(--line);
+}
+.toc-list > li > a {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2em;
+  padding: 0.5em 0.2em;
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  letter-spacing: 0.18em;
+  transition: color 0.3s ease, padding-left 0.3s ease;
+}
+.toc-list > li > a:hover {
+  background: var(--hover-bg);
+  padding-left: 0.8em;
+}
+.toc-num {
+  font-family: var(--serif-en);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  color: var(--fg-faint);
+}
+
+.toc-sub {
+  list-style: none;
+  margin: 0 0 0.5em;
+  padding: 0 0 0 3.4em;
+}
+.toc-sub li a {
+  display: block;
+  position: relative;
+  padding: 0.3em 0.6em 0.3em 1.4em;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  border-radius: 3px;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+  text-underline-offset: 0.32em;
+  text-decoration-thickness: 1px;
+  transition: background 0.25s ease, text-decoration-color 0.25s ease, padding-left 0.25s ease;
+}
+.toc-sub li a::before {
+  content: "→";
+  position: absolute;
+  left: 0.2em;
+  top: 0.3em;
+  font-family: var(--serif-en);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toc-sub li a:hover,
+.toc-sub li a:focus-visible {
+  background: var(--hover-bg);
+  text-decoration-color: #fff;
+  padding-left: 1.7em;
+  outline: none;
+}
+.toc-sub li a:hover::before,
+.toc-sub li a:focus-visible::before { opacity: 1; transform: none; }
+.toc-sub .cat {
+  display: inline-block;
+  margin-right: 1em;
+  letter-spacing: 0.12em;
+}
+.toc-sub .cat::before { content: "〈"; }
+.toc-sub .cat::after  { content: "〉"; }
+
+/* ---------- セクション共通 ---------- */
+.section {
+  padding: clamp(22px, 3.2vw, 36px) var(--pad);
+  scroll-margin-top: 16px;
+}
+
+.section-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.section-title {
+  margin: 0 0 0.8em;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9em;
+}
+.section-num {
+  font-family: var(--serif-en);
+  font-size: 0.55em;
+  letter-spacing: 0.1em;
+  color: var(--fg-faint);
+}
+
+.placeholder {
+  color: var(--fg-faint);
+  letter-spacing: 0.3em;
+  font-size: 0.9rem;
+}
+
+/* ---------- 経歴 ---------- */
+.career .section-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(28px, 6vw, 80px);
+}
+
+.birth {
+  margin: 0 0 0.9em;
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+}
+.birth .age {
+  margin-left: 0.4em;
+  color: var(--fg-dim);
+  font-size: 0.92em;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.timeline li {
+  display: grid;
+  grid-template-columns: 9.5em 1fr;
+  gap: 1.2em;
+  padding: 0.7em 0;
+  border-bottom: 1px solid var(--line);
+}
+.tl-year {
+  font-family: var(--serif-en);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+.tl-year i {
+  font-style: normal;
+  margin: 0 0.25em;
+  color: var(--fg-faint);
+}
+.tl-body {
+  font-size: 1.02rem;
+  letter-spacing: 0.08em;
+}
+.tl-body small {
+  display: block;
+  font-size: 0.8em;
+  color: var(--fg-faint);
+  letter-spacing: 0.06em;
+  margin-top: 0.15em;
+}
+
+/* ローマの写真：輪郭をぼかして背景に溶かす */
+.career-photo {
+  margin: 0;
+  position: relative;
+}
+.career-photo img {
+  width: 100%;
+  height: auto;
+}
+/* ---------- 私について ---------- */
+.about-label {
+  margin: 0 0 0.6em;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.about-label::after {
+  content: "";
+  width: 2.5em;
+  height: 1px;
+  background: var(--line);
+}
+
+.about-lead { margin-bottom: 1.3em; }
+
+.about-tagline {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1.9;
+  letter-spacing: 0.1em;
+}
+
+.about-body {
+  max-width: 44em;
+  margin-bottom: 1.5em;
+}
+.about-body p {
+  margin: 0 0 0.6em;
+  font-size: 1rem;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  text-align: justify;
+}
+
+.strength-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 3vw, 36px);
+}
+.strength-list li {
+  padding-top: 0.7em;
+  border-top: 1px solid var(--line);
+}
+.st-num {
+  display: block;
+  font-family: var(--serif-en);
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.4em;
+}
+.st-title {
+  display: block;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+}
+
+/* ---------- スキル・実績一覧 ---------- */
+.skill-group {
+  margin-bottom: 1.8em;
+  scroll-margin-top: 16px;
+}
+.skill-group:last-child { margin-bottom: 0; }
+/* 2つ目以降のカテゴリは、前のカテゴリから大きく間を空ける */
+.skill-group + .skill-group { margin-top: 4.5em; }
+
+/* カテゴリ見出し：太い罫線＋大きめの文字＋英字ラベル */
+.skill-cat {
+  margin: 0 0 1.2em;
+  padding-top: 0.7em;
+  border-top: 2px solid #fff;
+  font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
+}
+.skill-cat::after {
+  content: attr(data-en);
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.6em;
+  letter-spacing: 0.22em;
+}
+
+/* 錠剤型のタグ */
+.pill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em 0.7em;
+}
+.pill-list li {
+  display: inline-block;
+  padding: 0.3em 1.15em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+/* ---------- 作品 ---------- */
+.work {
+  margin-top: 1.8em;
+  padding-top: 1.4em;
+  border-top: 1px solid var(--line);
+}
+
+.work-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4em 1.4em;
+  margin-bottom: 0.7em;
+}
+.work-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+.work-award {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  padding: 0.15em 0.9em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+}
+
+/* ロゴ付きタイトル */
+.work-title.has-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.work-logo {
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  flex: none;
+}
+
+/* アプリアイコン型のロゴ（角丸は画像側で切り抜き済み） */
+.work-logo.is-app {
+  border-radius: 0;
+  border: none;
+}
+
+/* キー操作の対応表 */
+.keymap {
+  list-style: none;
+  margin: 0.2em 0 0.8em 1.5em;
+  padding: 0;
+}
+.keymap li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+  padding: 0.25em 0;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+.keymap .key {
+  display: inline-block;
+  min-width: 3.5em;
+  padding: 0.05em 0.7em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.92em;
+}
+.keymap .arrow { font-family: var(--serif-en); }
+
+/* ポスター：横3枚、タップで拡大 */
+.poster-block { margin-top: 1.6em; }
+.label-note { letter-spacing: 0.08em; }
+.poster-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1em;
+}
+.poster-row li { height: 260px; }
+.poster-row.shots li { height: 400px; }
+.poster-row.shots { gap: 0.8em; }
+.poster-row.shots .lb-trigger { border-radius: 14px; overflow: hidden; }
+.lb-trigger {
+  display: block;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: none;
+  cursor: zoom-in;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.lb-trigger img { height: 100%; width: auto; display: block; }
+.lb-trigger:hover,
+.lb-trigger:focus-visible { transform: translateY(-3px); border-color: #fff; outline: none; }
+.poster-hint {
+  margin: 0.6em 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+}
+
+/* 中くらいの画像（横長・単体） */
+.work-gallery figure.is-medium img {
+  width: min(100%, 720px);
+  margin: 0 auto;
+}
+
+/* 漫画ページ */
+.poster-row.manga li { height: 340px; }
+
+/* 能面ピクセル：アニメーション＋フレーム */
+.noh-block {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+}
+.noh-anim { margin: 0; }
+.noh-anim img,
+.frame-row img {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border-radius: 10px;
+}
+.noh-anim figcaption {
+  margin-top: 0.5em;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+.frame-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8em;
+}
+.frame-row li span {
+  display: block;
+  margin-top: 0.4em;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-align: center;
+}
+
+/* ライトボックス */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(20, 20, 20, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: zoom-out;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+.lb-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--serif-en);
+}
+
+/* タイトル自体がリンクのとき */
+.title-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  transition: border-color 0.25s ease;
+}
+.title-link small {
+  font-family: var(--serif-en);
+  font-size: 0.7em;
+}
+.title-link:hover { border-color: #fff; }
+
+/* 受賞・認定の錠剤（複数） */
+.award-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 0.6em;
+}
+.award-list li {
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  padding: 0.15em 0.9em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+}
+
+/* 説明文＋右に写真 */
+.work-split {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: clamp(20px, 3vw, 44px);
+  align-items: start;
+  margin-bottom: 1.4em;
+}
+.work-split .work-desc { margin-bottom: 0; }
+.work-split .work-desc p:not(.work-label) { margin-bottom: 0.7em; }
+.work-split .work-links { margin: 1.1em 0 0; }
+.work-side-photo { margin: 0; }
+.work-side-photo img { width: 100%; height: auto; display: block; }
+.work-side-photo figcaption {
+  margin-top: 0.5em;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+}
+.work-side-photo a:hover img { opacity: 0.92; }
+
+.work-lead {
+  font-weight: 500;
+  font-size: 1.05rem !important;
+  letter-spacing: 0.07em !important;
+}
+.work-footnote {
+  font-size: 0.85rem !important;
+  line-height: 1.8 !important;
+}
+.work-desc sup {
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.work-role {
+  margin: 0 0 1.1em;
+  max-width: 44em;
+  font-size: 0.98rem;
+  line-height: 1.95;
+  letter-spacing: 0.05em;
+}
+.work-note {
+  display: block;
+  font-size: 0.85em;
+  margin-top: 0.1em;
+}
+
+.work-label {
+  margin: 0 0 0.4em;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.work-label::after {
+  content: "";
+  width: 2.5em;
+  height: 1px;
+  background: var(--line);
+}
+.work-desc { margin-bottom: 1.1em; }
+.work-desc p:not(.work-label) {
+  margin: 0;
+  max-width: 44em;
+  font-size: 0.98rem;
+  line-height: 1.95;
+  letter-spacing: 0.05em;
+  text-align: justify;
+}
+
+/* 外部リンク */
+.work-links {
+  list-style: none;
+  margin: 0 0 1.3em;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em 0.8em;
+}
+.work-links a,
+.work-links .link-pending {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7em;
+  padding: 0.4em 1.1em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.work-links small {
+  font-family: var(--serif-en);
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+}
+.work-links a:hover,
+.work-links a:focus-visible {
+  background: #fff;
+  color: var(--bg);
+  outline: none;
+}
+.work-links .link-pending {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 画像：縦に並べる */
+.work-gallery,
+.work-exhibit {
+  display: grid;
+  gap: 1.4em;
+}
+.work-gallery figure,
+.work-exhibit figure {
+  margin: 0;
+}
+.work-gallery img,
+.work-exhibit img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.work-gallery figure.is-portrait img,
+.work-exhibit figure.is-portrait img {
+  width: auto;
+  max-width: 100%;
+  max-height: 78vh;
+  margin: 0 auto;
+}
+/* 縦長でも大きめに見せたいもの */
+.work-gallery figure.is-portrait.is-large img {
+  max-height: none;
+  width: min(100%, 760px);
+}
+.work-gallery.no-caption { gap: 1.8em; }
+
+.work-gallery figcaption,
+.work-exhibit figcaption {
+  margin-top: 0.5em;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+.work-gallery a:hover img,
+.work-exhibit a:hover img {
+  opacity: 0.92;
+}
+
+.work-exhibit {
+  margin-top: 1.6em;
+  padding-top: 1.3em;
+  border-top: 1px solid var(--line);
+  grid-template-columns: 1fr 260px;
+  align-items: start;
+  gap: clamp(20px, 3vw, 40px);
+}
+.work-exhibit figure img { width: 100%; }
+.work-exhibit figcaption { text-align: left; letter-spacing: 0.12em; }
+.work-exhibit > p {
+  margin: 0;
+  max-width: 44em;
+  font-size: 0.98rem;
+  line-height: 1.95;
+  letter-spacing: 0.05em;
+  text-align: justify;
+}
+
+/* ---------- 終わりに ---------- */
+.closing .section-inner {
+  padding-top: 0.5em;
+  border-top: 2px solid #fff;
+}
+.closing .section-title { padding-top: 0.8em; }
+.closing-text {
+  margin: 0;
+  max-width: 40em;
+  font-size: 1.05rem;
+  line-height: 2.1;
+  letter-spacing: 0.07em;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 20px var(--pad) 28px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--serif-en);
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-faint);
+}
+.footer p { margin: 0; }
+.to-top { transition: color 0.3s ease; }
+.to-top:hover { color: var(--fg); }
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 760px) {
+  .hero { padding-top: 28px; padding-bottom: 8px; }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-photo { order: -1; width: min(72vw, 300px); }
+
+  .toc-sub { padding-left: 0; }
+  .toc-sub .cat { display: block; margin: 0; }
+
+  .career .section-inner { grid-template-columns: 1fr; }
+  .career-photo { max-width: 520px; margin: 0 auto; }
+
+  .timeline li { grid-template-columns: 1fr; gap: 0.1em; padding: 0.8em 0; }
+
+  .pc-only { display: none; }
+  .work-exhibit { grid-template-columns: 1fr; }
+  .work-split { grid-template-columns: 1fr; }
+  .poster-row li { height: 180px; }
+  .poster-row.shots li { height: 300px; }
+  .poster-row.manga li { height: 240px; }
+  .noh-block { grid-template-columns: 1fr; }
+  .noh-anim { max-width: 260px; margin: 0 auto; }
+  .work-side-photo { max-width: 360px; }
+  .work-exhibit figure { max-width: 300px; }
+  .strength-list { grid-template-columns: 1fr; gap: 0; }
+  .strength-list li { display: flex; align-items: baseline; gap: 1em; padding: 0.8em 0; }
+  .strength-list li:last-child { border-bottom: 1px solid var(--line); }
+  .st-num { margin: 0; }
+  .tl-year { font-size: 0.95rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .hero-inner, .js .toc, .js .section-inner { transition: none; opacity: 1; transform: none; }
+}
